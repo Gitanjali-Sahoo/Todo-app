@@ -1,40 +1,63 @@
-import { useState, ChangeEvent, FormEvent } from 'react'
+import { useState, ChangeEvent, FormEvent } from 'react';
+
+interface Task {
+    task: string;
+    time: string;
+}
 
 const TodoList = () => {
-    const [currentTask, setCurrentTask] = useState<string>('')
-    const [Tasks, setTasks] = useState<string[]>([])
+    const [currentTask, setCurrentTask] = useState<string>('');
+    const [tasks, setTasks] = useState<Task[]>([]);
 
-    const hadleInput = (e: ChangeEvent<HTMLInputElement>) => {
-        setCurrentTask(e.target.value)
-        console.log(currentTask)
-    }
+    const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
+        setCurrentTask(e.target.value);
+    };
 
     const submitForm = (e: FormEvent) => {
-        e.preventDefault()
-        setTasks([...Tasks, currentTask])
-        setCurrentTask('')
-    }
+        e.preventDefault();
+        const newTask: Task = { task: currentTask, time: new Date().toLocaleTimeString() };
+        setTasks([...tasks, newTask]);
+        setCurrentTask('');
+    };
+
+    const deleteTask = (index: number) => {
+        const updatedTasks = [...tasks];
+        updatedTasks.splice(index, 1);
+        setTasks(updatedTasks);
+    };
 
     return (
-        <div>
-            <form action="submit" onSubmit={submitForm}>
+        <div className="todo-container">
+            <form action="submit" onSubmit={submitForm} className="todo-form">
                 <input
+                    className="todo-input"
                     type="text"
                     placeholder="Enter task....."
                     value={currentTask}
-                    onChange={hadleInput}
+                    onChange={handleInput}
                 />
-                <button>Add Task</button>
+                <button className="todo-button">Add Task</button>
             </form>
-            <div>
-                {Tasks.map((task: string, index: number) => (
-                    <ul key={index}>
-                        <li>{task}</li>
+            <div className="todo-tasks">
+                {tasks.map((taskData, index) => (
+                    <ul className="todo" key={index}>
+                        <li className="delete-task">{taskData.task}</li>
+                        <div className='todo-date'>
+                            <button
+                                className="delete-button"
+                                onClick={() => {
+                                    deleteTask(index);
+                                }}
+                            >
+                                Delete Task
+                            </button>
+                            <h4>{taskData.time}</h4>
+                        </div>
                     </ul>
                 ))}
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default TodoList
+export default TodoList;

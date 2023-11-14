@@ -1,6 +1,6 @@
 
 import TodoList from './Component/TodoList'
-import './index.css'
+import './App.css'
 
 function App() {
 
