@@ -15,9 +15,13 @@
     height: 100vh;
     background-color: #000000d6;
 }
+.todo-form {
+    display: flex;
+    width: 50%;
+}
 .todo-input {
     height: 40px;
-    width: 300px;
+    width: 100%;
     background-color: white;
     font-size: 1rem;
     border-top-left-radius: 8px;
@@ -27,7 +31,7 @@
 }
 .todo-button {
     height: 40px;
-    width: 90px;
+    width: 100%;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
     background-color: #2aa5a4c4;
@@ -39,33 +43,54 @@
 }
 .todo-tasks {
     margin-top: 10px;
-    width: 390px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the tasks horizontally */
 }
+
 .todo {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    align-items: center; /* Center the content horizontally */
     margin-bottom: 10px;
     border-radius: 8px;
     border: none;
     color: white;
+    background-color: white;
+    padding: 10px;
+    max-width: 300px; /* Optional: Set a maximum width for tasks */
+    box-sizing: border-box;
+    color: black;
 }
+
+.delete-task {
+    padding-left: 10px;
+    width: 100%;
+    white-space: pre-wrap;
+    word-break: break-all;
+    text-align: center; /* Center the text horizontally */
+}
+
+.todo-date {
+    display: flex;
+    flex-direction: column; /* Align date and button vertically */
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
 .delete-button {
     width: 90px;
     height: 40px;
     border: none;
     border-radius: 8px;
-    background-color:#63a93d;
+    /* background-color: #63a93d; */
+    background-color: #298887;
     color: white;
     font-weight: bold;
-}
-.delete-task{
-    padding-left: 10px;
-}
-.todo-date{
-    display: flex;
-    gap: 5px;
-    justify-content: center;
-    align-items: center;
-    background-color: none;
+    cursor: pointer;
+    margin-top: 5px; /* Add margin for spacing */
+    box-sizing: border-box;
 }
