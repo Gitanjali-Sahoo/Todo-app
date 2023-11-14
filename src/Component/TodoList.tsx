@@ -15,8 +15,9 @@ const TodoList = () => {
         setCurrentTask(e.target.value);
     };
 
-    const submitForm = (e: FormEvent<Element>) => {
+    const handleFormSubmit = (e: FormEvent) => {
         e.preventDefault();
+
         if (editIndex !== null) {
             // Editing existing task
             const updatedTasks = [...tasks];
@@ -46,7 +47,7 @@ const TodoList = () => {
 
     return (
         <div className="todo-container">
-            <form action="submit" onSubmit={submitForm} className="todo-form">
+            <form action="submit" onSubmit={handleFormSubmit} className="todo-form">
                 <input
                     className="todo-input"
                     type="text"
@@ -66,8 +67,7 @@ const TodoList = () => {
                                     value={currentTask}
                                     onChange={handleInput}
                                 />
-                               <FaCheck onClick={() => submitForm(new Event('submit') as unknown as FormEvent<Element>)} />
-
+                                <FaCheck onClick={handleFormSubmit} />
                             </>
                         ) : (
                             <>
