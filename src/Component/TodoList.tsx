@@ -1,4 +1,5 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
+import { FaEdit, FaCheck } from 'react-icons/fa';
 
 interface Task {
     task: string;
@@ -8,15 +9,26 @@ interface Task {
 const TodoList = () => {
     const [currentTask, setCurrentTask] = useState<string>('');
     const [tasks, setTasks] = useState<Task[]>([]);
+    const [editIndex, setEditIndex] = useState<number | null>(null);
 
     const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
         setCurrentTask(e.target.value);
     };
 
-    const submitForm = (e: FormEvent) => {
+    const submitForm = (e: FormEvent<Element>) => {
         e.preventDefault();
-        const newTask: Task = { task: currentTask, time: new Date().toLocaleTimeString() };
-        setTasks([...tasks, newTask]);
+        if (editIndex !== null) {
+            // Editing existing task
+            const updatedTasks = [...tasks];
+            updatedTasks[editIndex] = { task: currentTask, time: new Date().toLocaleTimeString() };
+            setTasks(updatedTasks);
+            setEditIndex(null);
+        } else {
+            // Adding new task
+            const newTask: Task = { task: currentTask, time: new Date().toLocaleTimeString() };
+            setTasks([...tasks, newTask]);
+        }
+
         setCurrentTask('');
     };
 
@@ -24,6 +36,12 @@ const TodoList = () => {
         const updatedTasks = [...tasks];
         updatedTasks.splice(index, 1);
         setTasks(updatedTasks);
+        setEditIndex(null); // Reset editIndex if a task is deleted
+    };
+
+    const editTask = (index: number) => {
+        setEditIndex(index);
+        setCurrentTask(tasks[index].task);
     };
 
     return (
@@ -36,12 +54,27 @@ const TodoList = () => {
                     value={currentTask}
                     onChange={handleInput}
                 />
-                <button className="todo-button">Add Task</button>
+                <button className="todo-button">{editIndex !== null ? <FaCheck /> : 'Add Task'}</button>
             </form>
             <div className="todo-tasks">
                 {tasks.map((taskData, index) => (
                     <ul className="todo" key={index}>
-                        <li className="delete-task">{taskData.task}</li>
+                        {editIndex === index ? (
+                            <>
+                                <input
+                                    type="text"
+                                    value={currentTask}
+                                    onChange={handleInput}
+                                />
+                               <FaCheck onClick={() => submitForm(new Event('submit') as unknown as FormEvent<Element>)} />
+
+                            </>
+                        ) : (
+                            <>
+                                <li className="delete-task">{taskData.task}</li>
+                                <FaEdit onClick={() => editTask(index)} />
+                            </>
+                        )}
                         <div className='todo-date'>
                             <button
                                 className="delete-button"
